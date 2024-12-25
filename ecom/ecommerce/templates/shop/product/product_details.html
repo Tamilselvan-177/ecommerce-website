@@ -1,0 +1,104 @@
+{% extends 'shop/index.html' %}
+
+{% block title %}
+{{ product.name }} - Shopkart
+{% endblock title %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <!-- Product Image Section -->
+        <div class="col-md-6">
+            <div class="image-container">
+                {% if product.product_image %}
+                <img src="{{ product.product_image.url }}" alt="{{ product.name }}" class="card-img-top">
+                {% else %}
+                <img src="/path/to/placeholder-image.jpg" alt="Placeholder Image" class="card-img-top">
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Product Details Section -->
+        <div class="col-md-6">
+            <h1 class="mb-3">{{ product.name }}</h1>
+            <hr style="border-color: #b8bfc2;">
+            <h4 class="text-success">Rs. {{ product.selling_price }}</h4>
+            {% if product.original_price %}
+            <p class="text-muted"><s>Rs. {{ product.original_price }}</s></p>
+            {% endif %}
+            <p class="my-4">{{ product.description }}</p>
+            
+            <!-- Quantity Selection with Icon -->
+            <div class="d-flex align-items-center mb-4">
+                <label for="quantity" class="me-3">Quantity:</label>
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-boxes me-2"></i>
+                    <input type="number" id="quantity" name="quantity" value="1" min="1" class="form-control" style="width: 80px;">
+                </div>
+            </div>
+
+            <!-- Add to Cart with Cart Icon -->
+            <form method="POST" action="{% url 'add_to_cart' product.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary btn-lg">
+                    <i class="bi bi-cart-plus me-2"></i>Add to Cart
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+  /* Perfect Image Styling */
+  .image-container {
+    width: 100%;
+    height: 300px; /* Adjust the height to fit your layout */
+    overflow: hidden; /* Ensures no overflow */
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .image-container img {
+    width: 100%; /* Fills the container width */
+    height: 100%; /* Fills the container height */
+    object-fit: contain; /* Ensures the image fits without distortion */
+  }
+
+  .image-container:hover {
+    transform: scale(1.05); /* Zoom in effect on hover */
+  }
+
+  /* Quantity Icon Styling */
+  .bi-boxes {
+    font-size: 1.25rem;
+    color: #007bff;
+  }
+
+  /* Add to Cart Button Styling */
+  .btn-lg {
+    padding: 10px 20px;
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .btn-lg:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+  }
+
+  /* Footer styling */
+  footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #f1f1f1;
+    text-align: center;
+    padding: 20px 0;
+  }
+</style>
+
+<!-- Include Bootstrap Icons CDN for icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+{% endblock content %}
